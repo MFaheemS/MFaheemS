@@ -8,7 +8,7 @@
 
 <div align="center">
   
-![](https://komarev.com/ghpvc/?username=MFaheemS&color=blueviolet&style=for-the-badge)
+![Profile Views](https://komarev.com/ghpvc/?username=MFaheemS&color=blueviolet&style=for-the-badge)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/mohammad-faheem-437aa4354/)
 [![Email](https://img.shields.io/badge/Email-Contact-red?style=for-the-badge&logo=gmail)](mailto:faheemmohammad198@gmail.com)
 
@@ -30,143 +30,173 @@
 
 ---
 
-## 🧩 Skills (Animated + Wrap + Edge Fade)
+## 🛠️ Tech Arsenal
 
 <div align="center">
 
-<!-- 1) Create this file in your repo: /assets/skills-marquee.svg  (content included below)
-     2) Then this embed will animate in your README -->
-<img src="https://raw.githubusercontent.com/MFaheemS/MFaheemS/main/assets/skills-marquee.svg" alt="Skills marquee" />
+### 📱 Mobile Development
+<p>
+<img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" />
+<img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" />
+<img src="https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
+<img src="https://img.shields.io/badge/Kotlin-0095D5?style=for-the-badge&logo=kotlin&logoColor=white" />
+<img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" />
+<img src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white" />
+</p>
 
-<!-- Fallback static strip (if SVG ever fails to load) -->
-<br />
-<img height="56" src="https://skillicons.dev/icons?i=android,androidstudio,kotlin,java,flutter,dart,react,reactnative,nodejs,js,html,css,php,python,cpp,cs,opencv,tensorflow,numpy,pandas,mysql,mongodb,postgres,oracle,aws,azure,docker,git,linux,flask,unity,postman,figma&perline=14" />
+### 🌐 Web Development
+<p>
+<img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
+<img src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white" />
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" />
+<img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" />
+<img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" />
+<img src="https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white" />
+</p>
 
-</div>
+### 💻 Programming Languages
+<p>
+<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
+<img src="https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" />
+<img src="https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white" />
+<img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" />
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" />
+</p>
 
+### 🤖 AI & Data Science
+<p>
+<img src="https://img.shields.io/badge/OpenCV-27338e?style=for-the-badge&logo=OpenCV&logoColor=white" />
+<img src="https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white" />
+<img src="https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white" />
+<img src="https://img.shields.io/badge/MATLAB-0076A8?style=for-the-badge&logo=mathworks&logoColor=white" />
+<img src="https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white" />
+</p>
 
-##  Tech Stack
+### 🗄️ Databases
+<p>
+<img src="https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white" />
+<img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" />
+<img src="https://img.shields.io/badge/Oracle-F80000?style=for-the-badge&logo=oracle&logoColor=white" />
+<img src="https://img.shields.io/badge/SQL_Server-CC2927?style=for-the-badge&logo=microsoft-sql-server&logoColor=white" />
+<img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" />
+</p>
 
-<div align="center">
+### ☁️ Cloud & DevOps
+<p>
+<img src="https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white" />
+<img src="https://img.shields.io/badge/Azure-0089D6?style=for-the-badge&logo=microsoft-azure&logoColor=white" />
+<img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
+<img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" />
+<img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black" />
+</p>
 
-### Mobile Development
-![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
-![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)
-![React Native](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![Kotlin](https://img.shields.io/badge/Kotlin-0095D5?style=for-the-badge&logo=kotlin&logoColor=white)
-![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
-![Dart](https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white)
-
-### Web Development
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
-
-### Programming Languages
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![C++](https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)
-![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white)
-
-### AI & Data Science
-![OpenCV](https://img.shields.io/badge/OpenCV-27338e?style=for-the-badge&logo=OpenCV&logoColor=white)
-![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)
-![MATLAB](https://img.shields.io/badge/MATLAB-0076A8?style=for-the-badge&logo=mathworks&logoColor=white)
-
-### Databases
-![MySQL](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
-![Oracle](https://img.shields.io/badge/Oracle-F80000?style=for-the-badge&logo=oracle&logoColor=white)
-![MS SQL Server](https://img.shields.io/badge/SQL_Server-CC2927?style=for-the-badge&logo=microsoft-sql-server&logoColor=white)
-
-### Cloud & DevOps
-![AWS](https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)
-![Azure](https://img.shields.io/badge/Azure-0089D6?style=for-the-badge&logo=microsoft-azure&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-
-### Tools & Others
-![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
-![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
-![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
-![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)
-![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
-![Unity](https://img.shields.io/badge/Unity-100000?style=for-the-badge&logo=unity&logoColor=white)
-
-</div>
-
----
-
-## 📊 GitHub Stats
-
-<div align="center">
-  
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=MFaheemS&show_icons=true&theme=radical&hide_border=true&bg_color=0D1117&title_color=F75C7E&icon_color=F75C7E)
-
-![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=MFaheemS&theme=radical&hide_border=true&background=0D1117&ring=F75C7E&fire=F75C7E&currStreakLabel=F75C7E)
-
-![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=MFaheemS&layout=compact&theme=radical&hide_border=true&bg_color=0D1117&title_color=F75C7E)
+### 🛠️ Tools & Frameworks
+<p>
+<img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white" />
+<img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white" />
+<img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white" />
+<img src="https://img.shields.io/badge/Unity-100000?style=for-the-badge&logo=unity&logoColor=white" />
+<img src="https://img.shields.io/badge/VS_Code-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white" />
+</p>
 
 </div>
 
 ---
 
-
-
----
-
-## 📈 Contribution Graph
+## 📊 GitHub Statistics
 
 <div align="center">
-  
-[![Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=MFaheemS&theme=react-dark&hide_border=true&area=true)](https://github.com/ashutosh00710/github-readme-activity-graph)
+  <img width="49%" src="https://github-readme-stats.vercel.app/api?username=MFaheemS&show_icons=true&theme=tokyonight&hide_border=true&count_private=true" alt="GitHub Stats" />
+  <img width="49%" src="https://github-readme-streak-stats.herokuapp.com/?user=MFaheemS&theme=tokyonight&hide_border=true" alt="GitHub Streak" />
+</div>
 
+<div align="center">
+  <img width="60%" src="https://github-readme-stats.vercel.app/api/top-langs/?username=MFaheemS&layout=compact&theme=tokyonight&hide_border=true&langs_count=10" alt="Top Languages" />
 </div>
 
 ---
 
-## 💼 What I'm Working On
+## 📈 Contribution Activity
 
-```javascript
-const faheem = {
-    currentFocus: ["Android Development", "AI Applications", "Cloud Computing"],
-    learning: ["AWS", "Azure", "Advanced Machine Learning"],
-    askMeAbout: ["Android", "Python", "SQL", "AI", "Mobile Dev"],
-    funFact: "I debug code faster than I find matching socks 🧦"
-};
-```
+<div align="center">
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=MFaheemS&theme=tokyo-night&hide_border=true&area=true&custom_title=Contribution%20Graph" alt="Activity Graph" />
+</div>
 
----
 
-## 🎯 2024 Goals
-
-- ✅ Master AWS & Azure Cloud Services
-- 🔄 Build 5+ AI-powered mobile applications
-- 🔄 Contribute to open-source Android projects
-- 🔄 Obtain AWS Solutions Architect certification
-- 📚 Share knowledge through tech blogs
 
 ---
 
 ## 🌟 Featured Projects
 
+<table>
+<tr>
+<td width="50%" valign="top">
+
+### 🤖 Doctor AI Agent
+[![View Repo](https://img.shields.io/badge/View_Repo-4A90E2?style=for-the-badge&logo=github&logoColor=white)](https://github.com/MFaheemS/DoctorAIAgent)
+
+<div align="center">
+<a href="https://github.com/MFaheemS/DoctorAIAgent">
+  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Man%20Health%20Worker.png" alt="Doctor" width="80" height="80" />
+  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Stethoscope.png" alt="Stethoscope" width="80" height="80" />
+  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png" alt="Robot" width="80" height="80" />
+</a>
+</div>
+
+**An intelligent AI-powered medical assistant that provides health insights and recommendations**
+
 <div align="center">
 
-[![Repo 1](https://github-readme-stats.vercel.app/api/pin/?username=MFaheemS&repo=project-1&theme=radical&hide_border=true&bg_color=0D1117)](https://github.com/MFaheemS/DoctorAIAgent)
-[![Repo 2](https://github-readme-stats.vercel.app/api/pin/?username=MFaheemS&repo=project-2&theme=radical&hide_border=true&bg_color=0D1117)](https://github.com/MFaheemS/Socially)
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![AI](https://img.shields.io/badge/AI-FF6F00?style=flat-square&logo=tensorflow&logoColor=white)
+![ML](https://img.shields.io/badge/ML-00979D?style=flat-square&logo=scikit-learn&logoColor=white)
 
+</div>
+
+</td>
+<td width="50%" valign="top">
+
+### 📱 Socially
+[![View Repo](https://img.shields.io/badge/View_Repo-E4405F?style=for-the-badge&logo=github&logoColor=white)](https://github.com/MFaheemS/Socially)
+
+<div align="center">
+<a href="https://github.com/MFaheemS/Socially">
+  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Mobile%20Phone.png" alt="Mobile" width="80" height="80" />
+  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Smiling%20Face%20with%20Hearts.png" alt="Hearts" width="80" height="80" />
+  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Waving%20Hand.png" alt="Wave" width="80" height="80" />
+</a>
+</div>
+
+**A modern social media platform for connecting people and sharing moments**
+
+<div align="center">
+
+![Android](https://img.shields.io/badge/Android-3DDC84?style=flat-square&logo=android&logoColor=white)
+![Kotlin](https://img.shields.io/badge/Kotlin-0095D5?style=flat-square&logo=kotlin&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=flat-square&logo=firebase&logoColor=black)
+
+</div>
+
+</td>
+</tr>
+</table>
+
+
+
+<div align="center">
+  <i> More  projects coming soon! Stay tuned...</i>
 </div>
 
 ---
 
-## 📫 Connect With Me
+## 📫 Let's Connect!
 
 <div align="center">
-
+  
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Muhammad_Faheem-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mohammad-faheem-437aa4354/)
-[![Email](https://img.shields.io/badge/Email-faheemmohammad198%40gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:faheemmohammad198@gmail.com)
-[![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/your-username)
+[![Email](https://img.shields.io/badge/Email-faheemmohammad198@gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:faheemmohammad198@gmail.com)
+[![GitHub](https://img.shields.io/badge/GitHub-Follow_Me-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/MFaheemS)
+[![Portfolio](https://img.shields.io/badge/Portfolio-Visit_Site-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white)](https://github.com/MFaheemS)
 
 </div>
 
@@ -176,17 +206,19 @@ const faheem = {
 
 <div align="center">
   
-![](https://quotes-github-readme.vercel.app/api?type=horizontal&theme=radical)
+![Dev Quote](https://quotes-github-readme.vercel.app/api?type=horizontal&theme=tokyonight)
 
 </div>
 
 ---
 
-## 🐍 Contribution Snake
+## Contributions
 
 <div align="center">
   
-![Snake animation](https://raw.githubusercontent.com/MFaheemS/MFaheemS/output/github-contribution-grid-snake-dark.svg)
+![Snake Animation](https://github.com/MFaheemS/MFaheemS/blob/output/github-contribution-grid-snake-dark.svg)
+
+<i>Don't worry, it grows back! 🌱</i>
 
 </div>
 
@@ -194,10 +226,18 @@ const faheem = {
 
 <div align="center">
   
-### 💡 "*Code is like humor. When you have to explain it, it's bad.*" – Cory House
+### 💡 "*First, solve the problem. Then, write the code.*" – John Johnson
 
-[![Made with Love](https://img.shields.io/badge/Made%20with-❤️-red?style=for-the-badge)](https://github.com/your-username)
+![Visitor Count](https://profile-counter.glitch.me/MFaheemS/count.svg)
 
-**Show some ❤️ by starring some of the repositories!**
+**Thanks for visiting! Show some ❤️ by starring repositories that interest you!**
+
+</div>
+
+---
+
+<div align="center">
+  
+**[⬆ Back to Top](#)**
 
 </div>
