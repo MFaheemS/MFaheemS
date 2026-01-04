@@ -87,11 +87,11 @@
 
 <div align="center">
   
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=your-username&show_icons=true&theme=radical&hide_border=true&bg_color=0D1117&title_color=F75C7E&icon_color=F75C7E)
+![GitHub Stats](https://github-readme-stats.vercel.app/api?username=MFaheemS&show_icons=true&theme=radical&hide_border=true&bg_color=0D1117&title_color=F75C7E&icon_color=F75C7E)
 
-![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=your-username&theme=radical&hide_border=true&background=0D1117&ring=F75C7E&fire=F75C7E&currStreakLabel=F75C7E)
+![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=MFaheemS&theme=radical&hide_border=true&background=0D1117&ring=F75C7E&fire=F75C7E&currStreakLabel=F75C7E)
 
-![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=your-username&layout=compact&theme=radical&hide_border=true&bg_color=0D1117&title_color=F75C7E)
+![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=MFaheemS&layout=compact&theme=radical&hide_border=true&bg_color=0D1117&title_color=F75C7E)
 
 </div>
 
@@ -101,7 +101,7 @@
 
 <div align="center">
   
-[![trophy](https://github-profile-trophy.vercel.app/?username=your-username&theme=radical&no-frame=true&no-bg=true&margin-w=4&column=7)](https://github.com/ryo-ma/github-profile-trophy)
+[![trophy](https://github-profile-trophy.vercel.app/?username=MFaheemS&theme=radical&no-frame=true&no-bg=true&margin-w=4&column=7)](https://github.com/ryo-ma/github-profile-trophy)
 
 </div>
 
@@ -111,7 +111,7 @@
 
 <div align="center">
   
-[![Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=your-username&theme=react-dark&hide_border=true&area=true)](https://github.com/ashutosh00710/github-readme-activity-graph)
+[![Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=MFaheemS&theme=react-dark&hide_border=true&area=true)](https://github.com/ashutosh00710/github-readme-activity-graph)
 
 </div>
 
@@ -144,8 +144,8 @@ const faheem = {
 
 <div align="center">
 
-[![Repo 1](https://github-readme-stats.vercel.app/api/pin/?username=your-username&repo=project-1&theme=radical&hide_border=true&bg_color=0D1117)](https://github.com/your-username/project-1)
-[![Repo 2](https://github-readme-stats.vercel.app/api/pin/?username=your-username&repo=project-2&theme=radical&hide_border=true&bg_color=0D1117)](https://github.com/your-username/project-2)
+[![Repo 1](https://github-readme-stats.vercel.app/api/pin/?username=MFaheemS&repo=project-1&theme=radical&hide_border=true&bg_color=0D1117)](https://github.com/your-username/project-1)
+[![Repo 2](https://github-readme-stats.vercel.app/api/pin/?username=MFaheemS&repo=project-2&theme=radical&hide_border=true&bg_color=0D1117)](https://github.com/your-username/project-2)
 
 </div>
 
