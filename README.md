@@ -30,6 +30,20 @@
 
 ---
 
+## 🧩 Skills (Animated + Wrap + Edge Fade)
+
+<div align="center">
+
+<!-- 1) Create this file in your repo: /assets/skills-marquee.svg  (content included below)
+     2) Then this embed will animate in your README -->
+<img src="https://raw.githubusercontent.com/MFaheemS/MFaheemS/main/assets/skills-marquee.svg" alt="Skills marquee" />
+
+<!-- Fallback static strip (if SVG ever fails to load) -->
+<br />
+<img height="56" src="https://skillicons.dev/icons?i=android,androidstudio,kotlin,java,flutter,dart,react,reactnative,nodejs,js,html,css,php,python,cpp,cs,opencv,tensorflow,numpy,pandas,mysql,mongodb,postgres,oracle,aws,azure,docker,git,linux,flask,unity,postman,figma&perline=14" />
+
+</div>
+
 
 ## 🛠️ Tech Stack
 
