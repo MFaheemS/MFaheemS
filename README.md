@@ -155,7 +155,7 @@ const faheem = {
 
 <div align="center">
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Muhammad_Faheem-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/mohammad-faheem)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Muhammad_Faheem-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mohammad-faheem-437aa4354/)
 [![Email](https://img.shields.io/badge/Email-faheemmohammad198%40gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:faheemmohammad198@gmail.com)
 [![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/your-username)
 
@@ -177,7 +177,7 @@ const faheem = {
 
 <div align="center">
   
-![Snake animation](https://raw.githubusercontent.com/your-username/your-username/output/github-contribution-grid-snake-dark.svg)
+![Snake animation](https://raw.githubusercontent.com/MFaheemS/MFaheemS/output/github-contribution-grid-snake-dark.svg)
 
 </div>
 
