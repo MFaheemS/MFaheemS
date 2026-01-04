@@ -34,19 +34,17 @@
         dur="18s"
         repeatCount="indefinite" />
 
-      <!-- First strip -->
       <image
         x="0"
         y="15"
         height="56"
-        href="https://skillicons.dev/icons?i=android,androidstudio,kotlin,java,flutter,dart,react,reactnative,nodejs,js,html,css,php,python,cpp,cs,opencv,tensorflow,numpy,pandas,mysql,mongodb,postgres,oracle,aws,azure,docker,git,linux,flask,unity,postman,figma&perline=40" />
+        href="https://skillicons.dev/icons?i=android,androidstudio,kotlin,java,flutter,dart,react,reactnative,nodejs,js,html,css,php,python,cpp,cs,opencv,tensorflow,numpy,pandas,mysql,mongodb,postgres,oracle,aws,azure,docker,git,linux,flask,unity,postman,figma&amp;perline=40" />
 
-      <!-- Second strip (for seamless loop) -->
       <image
         x="900"
         y="15"
         height="56"
-        href="https://skillicons.dev/icons?i=android,androidstudio,kotlin,java,flutter,dart,react,reactnative,nodejs,js,html,css,php,python,cpp,cs,opencv,tensorflow,numpy,pandas,mysql,mongodb,postgres,oracle,aws,azure,docker,git,linux,flask,unity,postman,figma&perline=40" />
+        href="https://skillicons.dev/icons?i=android,androidstudio,kotlin,java,flutter,dart,react,reactnative,nodejs,js,html,css,php,python,cpp,cs,opencv,tensorflow,numpy,pandas,mysql,mongodb,postgres,oracle,aws,azure,docker,git,linux,flask,unity,postman,figma&amp;perline=40" />
     </g>
   </g>
 </svg>
