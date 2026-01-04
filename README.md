@@ -45,7 +45,7 @@
 </div>
 
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 <div align="center">
 
@@ -112,13 +112,7 @@
 
 ---
 
-## 🏆 GitHub Trophies
 
-<div align="center">
-  
-[![trophy](https://github-profile-trophy.vercel.app/?username=MFaheemS&theme=radical&no-frame=true&no-bg=true&margin-w=4&column=7)](https://github.com/ryo-ma/github-profile-trophy)
-
-</div>
 
 ---
 
@@ -159,8 +153,8 @@ const faheem = {
 
 <div align="center">
 
-[![Repo 1](https://github-readme-stats.vercel.app/api/pin/?username=MFaheemS&repo=project-1&theme=radical&hide_border=true&bg_color=0D1117)](https://github.com/your-username/project-1)
-[![Repo 2](https://github-readme-stats.vercel.app/api/pin/?username=MFaheemS&repo=project-2&theme=radical&hide_border=true&bg_color=0D1117)](https://github.com/your-username/project-2)
+[![Repo 1](https://github-readme-stats.vercel.app/api/pin/?username=MFaheemS&repo=project-1&theme=radical&hide_border=true&bg_color=0D1117)](https://github.com/MFaheemS/DoctorAIAgent)
+[![Repo 2](https://github-readme-stats.vercel.app/api/pin/?username=MFaheemS&repo=project-2&theme=radical&hide_border=true&bg_color=0D1117)](https://github.com/MFaheemS/Socially)
 
 </div>
 
