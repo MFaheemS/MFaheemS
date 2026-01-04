@@ -8,8 +8,8 @@
 
 <div align="center">
   
-![](https://komarev.com/ghpvc/?username=your-username&color=blueviolet&style=for-the-badge)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/mohammad-faheem)
+![](https://komarev.com/ghpvc/?username=MFaheemS&color=blueviolet&style=for-the-badge)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/mohammad-faheem-437aa4354/)
 [![Email](https://img.shields.io/badge/Email-Contact-red?style=for-the-badge&logo=gmail)](mailto:faheemmohammad198@gmail.com)
 
 </div>
@@ -29,6 +29,7 @@
 <br clear="right"/>
 
 ---
+
 
 ## 🛠️ Tech Stack
 
