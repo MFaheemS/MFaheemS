@@ -27,14 +27,6 @@ jobs:
           echo "Ref: ${{ github.ref }}"
           echo "================================"
       
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-      
-      - name: Install dependencies
-        run: npm install
-      
       - name: Fetch GitHub contribution data
         id: github-data
         run: |
