@@ -106,7 +106,7 @@
 ##  GitHub Statistics
 
 <div align="center">
-  <img width="49%" src="https://github-readme-streak-stats.herokuapp.com/?user=MFaheemS&theme=tokyonight&hide_border=true" alt="GitHub Streak" />
+  <img width="49%" src="./github-streak.svg" alt="GitHub Streak" />
 </div>
 
 
