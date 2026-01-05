@@ -111,13 +111,6 @@
 
 
 
----
-
-##  Contribution Activity
-
-<div align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=MFaheemS&theme=tokyo-night&hide_border=true&area=true&custom_title=Contribution%20Graph" alt="Activity Graph" />
-</div>
 
 
 
