@@ -138,12 +138,27 @@ jobs:
               </svg>`;
             }
             
-            const data = await getContributions();
-            console.log('API Response:', JSON.stringify(data).substring(0, 200));
-            const stats = calculateStreaks(data);
-            console.log('Calculated stats - Current:', stats.currentStreak, 'Longest:', stats.longestStreak, 'Total:', stats.totalContributions);
-            const svg = createSVG(username, stats.currentStreak, stats.longestStreak, stats.totalContributions);
-            fs.writeFileSync('github-streak.svg', svg);
+            try {
+              const data = await getContributions();
+              console.log('Raw API data structure:', Object.keys(data));
+              
+              const stats = calculateStreaks(data);
+              console.log('Stats object:', stats);
+              console.log('Types:', typeof stats.currentStreak, typeof stats.longestStreak, typeof stats.totalContributions);
+              
+              const current = parseInt(stats.currentStreak) || 0;
+              const longest = parseInt(stats.longestStreak) || 0;
+              const total = parseInt(stats.totalContributions) || 0;
+              
+              console.log('Final values - Current:', current, 'Longest:', longest, 'Total:', total);
+              
+              const svg = createSVG(username, current, longest, total);
+              fs.writeFileSync('github-streak.svg', svg);
+              console.log('SVG written successfully');
+            } catch (error) {
+              console.error('Error:', error);
+              throw error;
+            }
             
       - name: Commit changes
         run: |
