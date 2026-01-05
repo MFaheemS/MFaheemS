@@ -1,0 +1,68 @@
+name: Update Streak
+
+on:
+  schedule:
+    # Run every hour instead of daily
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  update-streak:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Update streak
+        run: |
+          # Fetch current streak data with cache-busting parameter
+          CACHE_BUST=$(date +%s)
+          echo "🔄 Fetching streak data (cache bust: $CACHE_BUST)..."
+          
+          RESPONSE=$(curl -s "https://api.github.com/users/${{ github.repository_owner }}/repos?cache=$CACHE_BUST")
+          
+          # Enhanced debugging output
+          echo "📊 API Response Status:"
+          echo "Response length: ${#RESPONSE}"
+          echo "First 200 chars: ${RESPONSE:0:200}"
+          
+          # Extract current streak with improved edge case handling
+          if [ -z "$RESPONSE" ]; then
+            echo "❌ Error: Empty API response"
+            exit 1
+          fi
+          
+          # Calculate streak with edge case handling
+          CURRENT_STREAK=$(echo "$RESPONSE" | jq '[.[] | select(.pushed_at != null) | .pushed_at] | sort | reverse | .[0]' 2>/dev/null)
+          
+          if [ -z "$CURRENT_STREAK" ] || [ "$CURRENT_STREAK" == "null" ]; then
+            echo "⚠️ Warning: Could not calculate streak from API response"
+            CURRENT_STREAK="0"
+          else
+            echo "✅ Streak calculated successfully: $CURRENT_STREAK"
+          fi
+          
+          # Enhanced streak calculation for edge cases
+          LAST_PUSH=$(date -d "$CURRENT_STREAK" +%s 2>/dev/null || echo "0")
+          CURRENT_TIME=$(date +%s)
+          DAYS_SINCE_PUSH=$(( ($CURRENT_TIME - $LAST_PUSH) / 86400 ))
+          
+          echo "📅 Days since last push: $DAYS_SINCE_PUSH"
+          
+          # Handle edge case: if more than 1 day has passed, reset streak
+          if [ "$DAYS_SINCE_PUSH" -gt 1 ]; then
+            echo "🔄 Streak reset due to inactivity"
+            CURRENT_STREAK="0"
+          fi
+          
+          echo "🎯 Final streak value: $CURRENT_STREAK"
+          
+          # Update streak in repository
+          echo "$CURRENT_STREAK" > STREAK.txt
+          
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add STREAK.txt
+          git commit -m "Update streak: $CURRENT_STREAK days" || echo "No changes to commit"
+          git push
