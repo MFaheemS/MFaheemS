@@ -1,0 +1,232 @@
+name: Update GitHub Streak Badge
+
+on:
+  schedule:
+    # Runs at 00:00 UTC every day
+    - cron: '0 0 * * *'
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  update-streak:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Generate Streak SVG
+        run: |
+          node << 'EOF'
+          const https = require('https');
+          const fs = require('fs');
+
+          const username = 'MFaheemS';
+
+          // Function to fetch GitHub contribution data
+          function getContributions() {
+            return new Promise((resolve, reject) => {
+              const options = {
+                hostname: 'github-contributions-api.jogruber.de',
+                path: `/v4/${username}`,
+                method: 'GET',
+                headers: {
+                  'User-Agent': 'GitHub-Streak-Action'
+                }
+              };
+
+              https.get(options, (res) => {
+                let data = '';
+                res.on('data', chunk => data += chunk);
+                res.on('end', () => {
+                  try {
+                    resolve(JSON.parse(data));
+                  } catch (e) {
+                    reject(e);
+                  }
+                });
+              }).on('error', reject);
+            });
+          }
+
+          // Calculate streaks from contribution data
+          function calculateStreaks(contributions) {
+            const today = new Date().toISOString().split('T')[0];
+            let currentStreak = 0;
+            let longestStreak = 0;
+            let tempStreak = 0;
+            let totalContributions = 0;
+
+            const years = Object.keys(contributions.contributions).sort().reverse();
+            const allDates = [];
+
+            // Collect all dates with contributions
+            years.forEach(year => {
+              Object.entries(contributions.contributions[year]).forEach(([date, count]) => {
+                totalContributions += count;
+                if (count > 0) {
+                  allDates.push(date);
+                }
+              });
+            });
+
+            allDates.sort().reverse();
+
+            // Calculate current streak
+            const todayDate = new Date(today);
+            for (let i = 0; i < 365; i++) {
+              const checkDate = new Date(todayDate);
+              checkDate.setDate(checkDate.getDate() - i);
+              const dateStr = checkDate.toISOString().split('T')[0];
+              
+              if (allDates.includes(dateStr)) {
+                currentStreak++;
+              } else {
+                break;
+              }
+            }
+
+            // Calculate longest streak
+            allDates.sort();
+            for (let i = 0; i < allDates.length; i++) {
+              if (i === 0) {
+                tempStreak = 1;
+              } else {
+                const prevDate = new Date(allDates[i - 1]);
+                const currDate = new Date(allDates[i]);
+                const diffDays = Math.floor((currDate - prevDate) / (1000 * 60 * 60 * 24));
+                
+                if (diffDays === 1) {
+                  tempStreak++;
+                } else {
+                  longestStreak = Math.max(longestStreak, tempStreak);
+                  tempStreak = 1;
+                }
+              }
+            }
+            longestStreak = Math.max(longestStreak, tempStreak);
+
+            return { currentStreak, longestStreak, totalContributions };
+          }
+
+          // Generate SVG
+          function createStreakSVG(username, current, longest, total) {
+            const width = 495;
+            const height = 195;
+            
+            let streakEmoji = '🔥';
+            let streakStatus = 'Keep it up!';
+            
+            if (current === 0) {
+              streakEmoji = '💤';
+              streakStatus = 'Start your streak today!';
+            } else if (current >= 30) {
+              streakEmoji = '⚡';
+              streakStatus = 'Incredible streak!';
+            } else if (current >= 7) {
+              streakEmoji = '🔥';
+              streakStatus = 'On fire!';
+            }
+            
+            return `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#1a1b27;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#2d1b69;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+    
+    <rect width="${width}" height="${height}" rx="10" fill="url(#grad1)"/>
+    <rect width="${width}" height="${height}" rx="10" fill="none" stroke="rgba(112, 165, 253, 0.2)" stroke-width="1"/>
+    
+    <text x="${width/2}" y="30" font-family="'Segoe UI', Arial, sans-serif" font-size="18" font-weight="bold" fill="#70a5fd" text-anchor="middle">
+        ${username}'s Contribution Streak
+    </text>
+    
+    <text x="${width/2}" y="55" font-family="'Segoe UI', Arial, sans-serif" font-size="12" fill="#9ca3af" text-anchor="middle">
+        ${streakStatus}
+    </text>
+    
+    <line x1="40" y1="70" x2="${width-40}" y2="70" stroke="rgba(112, 165, 253, 0.2)" stroke-width="1"/>
+    
+    <g>
+        <text x="80" y="110" font-family="'Segoe UI', Arial, sans-serif" font-size="32" font-weight="bold" fill="#70a5fd" text-anchor="middle">
+            ${current}
+        </text>
+        <text x="80" y="135" font-family="'Segoe UI', Arial, sans-serif" font-size="14" fill="#9ca3af" text-anchor="middle">
+            Current Streak
+        </text>
+        <text x="80" y="160" font-family="Arial" font-size="24" text-anchor="middle">
+            ${streakEmoji}
+        </text>
+    </g>
+    
+    <line x1="165" y1="85" x2="165" y2="175" stroke="rgba(112, 165, 253, 0.2)" stroke-width="1"/>
+    
+    <g>
+        <text x="${width/2}" y="110" font-family="'Segoe UI', Arial, sans-serif" font-size="32" font-weight="bold" fill="#a78bfa" text-anchor="middle">
+            ${longest}
+        </text>
+        <text x="${width/2}" y="135" font-family="'Segoe UI', Arial, sans-serif" font-size="14" fill="#9ca3af" text-anchor="middle">
+            Longest Streak
+        </text>
+        <text x="${width/2}" y="160" font-family="Arial" font-size="24" text-anchor="middle">
+            🏆
+        </text>
+    </g>
+    
+    <line x1="${width-165}" y1="85" x2="${width-165}" y2="175" stroke="rgba(112, 165, 253, 0.2)" stroke-width="1"/>
+    
+    <g>
+        <text x="${width-80}" y="110" font-family="'Segoe UI', Arial, sans-serif" font-size="32" font-weight="bold" fill="#34d399" text-anchor="middle">
+            ${total}
+        </text>
+        <text x="${width-80}" y="135" font-family="'Segoe UI', Arial, sans-serif" font-size="14" fill="#9ca3af" text-anchor="middle">
+            Total Contributions
+        </text>
+        <text x="${width-80}" y="160" font-family="Arial" font-size="24" text-anchor="middle">
+            📊
+        </text>
+    </g>
+</svg>`;
+          }
+
+          // Main execution
+          async function main() {
+            try {
+              console.log('Fetching contribution data...');
+              const data = await getContributions();
+              
+              console.log('Calculating streaks...');
+              const stats = calculateStreaks(data);
+              
+              console.log(`Current Streak: ${stats.currentStreak}`);
+              console.log(`Longest Streak: ${stats.longestStreak}`);
+              console.log(`Total Contributions: ${stats.totalContributions}`);
+              
+              console.log('Generating SVG...');
+              const svg = createStreakSVG(username, stats.currentStreak, stats.longestStreak, stats.totalContributions);
+              
+              fs.writeFileSync('github-streak.svg', svg);
+              console.log('SVG generated successfully!');
+            } catch (error) {
+              console.error('Error:', error);
+              process.exit(1);
+            }
+          }
+
+          main();
+          EOF
+
+      - name: Commit and push if changed
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add github-streak.svg
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update GitHub streak badge" && git push)
