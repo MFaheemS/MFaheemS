@@ -9,16 +9,16 @@ permissions:
   contents: write
 
 jobs:
-  update-streak:
+  update-streak: 
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name:  Checkout
         uses: actions/checkout@v4
         
       - name: Generate Streak SVG
         uses: actions/github-script@v7
         with:
-          script: |
+          script:  |
             const https = require('https');
             const fs = require('fs');
             
@@ -28,7 +28,7 @@ jobs:
               return new Promise((resolve, reject) => {
                 https.get(`https://github-contributions-api.jogruber.de/v4/${username}`, (res) => {
                   let data = '';
-                  res.on('data', chunk => data += chunk);
+                  res. on('data', chunk => data += chunk);
                   res.on('end', () => resolve(JSON.parse(data)));
                 }).on('error', reject);
               });
@@ -43,9 +43,10 @@ jobs:
               
               if (!data || !data.contributions) {
                 console.log('No contribution data available');
-                return { currentStreak: 0, longestStreak: 0, totalContributions: 0 };
+                return { currentStreak:  0, longestStreak:  0, totalContributions:  0 };
               }
               
+              // Collect all dates with contributions
               Object.keys(data.contributions).forEach(year => {
                 const yearData = data.contributions[year];
                 Object.keys(yearData).forEach(date => {
@@ -62,21 +63,12 @@ jobs:
               }
               
               allDates.sort();
+              
+              // Get today's date in UTC
               const today = new Date();
-              today.setHours(0, 0, 0, 0);
+              const todayStr = today.toISOString().split('T')[0];
               
-              for (let i = 0; i < 365; i++) {
-                const checkDate = new Date(today);
-                checkDate.setDate(checkDate.getDate() - i);
-                const dateStr = checkDate.toISOString().split('T')[0];
-                
-                if (allDates.includes(dateStr)) {
-                  currentStreak++;
-                } else if (i > 0) {
-                  break;
-                }
-              }
-              
+              // Calculate longest streak
               for (let i = 0; i < allDates.length; i++) {
                 if (i === 0) {
                   tempStreak = 1;
@@ -94,6 +86,39 @@ jobs:
                 }
               }
               longestStreak = Math.max(longestStreak, tempStreak);
+              
+              // Calculate current streak (from today backwards)
+              const lastContributionDate = allDates[allDates.length - 1];
+              
+              // Only count as current streak if last contribution is today or yesterday
+              if (lastContributionDate === todayStr) {
+                currentStreak = 1;
+              } else {
+                const lastDate = new Date(lastContributionDate);
+                const todayDate = new Date(todayStr);
+                const diffDays = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+                
+                if (diffDays === 1) {
+                  currentStreak = 1;
+                } else {
+                  currentStreak = 0;
+                }
+              }
+              
+              // If streak is active, count backwards from today
+              if (currentStreak > 0) {
+                for (let i = allDates.length - 2; i >= 0; i--) {
+                  const prevDate = new Date(allDates[i]);
+                  const nextDate = new Date(allDates[i + 1]);
+                  const diffDays = Math. floor((nextDate - prevDate) / (1000 * 60 * 60 * 24));
+                  
+                  if (diffDays === 1) {
+                    currentStreak++;
+                  } else {
+                    break;
+                  }
+                }
+              }
               
               return { currentStreak, longestStreak, totalContributions };
             }
@@ -144,9 +169,8 @@ jobs:
               
               const stats = calculateStreaks(data);
               console.log('Stats object:', stats);
-              console.log('Types:', typeof stats.currentStreak, typeof stats.longestStreak, typeof stats.totalContributions);
               
-              const current = parseInt(stats.currentStreak) || 0;
+              const current = parseInt(stats. currentStreak) || 0;
               const longest = parseInt(stats.longestStreak) || 0;
               const total = parseInt(stats.totalContributions) || 0;
               
