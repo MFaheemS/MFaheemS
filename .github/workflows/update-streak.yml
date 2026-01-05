@@ -34,36 +34,49 @@ jobs:
               });
             }
             
-            function calculateStreaks(contributions) {
+            function calculateStreaks(data) {
               let currentStreak = 0;
               let longestStreak = 0;
               let tempStreak = 0;
               let totalContributions = 0;
               const allDates = [];
               
-              Object.values(contributions.contributions).forEach(year => {
-                Object.entries(year).forEach(([date, count]) => {
+              if (!data || !data.contributions) {
+                console.log('No contribution data available');
+                return { currentStreak: 0, longestStreak: 0, totalContributions: 0 };
+              }
+              
+              Object.keys(data.contributions).forEach(year => {
+                const yearData = data.contributions[year];
+                Object.keys(yearData).forEach(date => {
+                  const count = yearData[date];
                   totalContributions += count;
-                  if (count > 0) allDates.push(date);
+                  if (count > 0) {
+                    allDates.push(date);
+                  }
                 });
               });
               
-              allDates.sort().reverse();
-              const today = new Date().toISOString().split('T')[0];
-              const todayDate = new Date(today);
+              if (allDates.length === 0) {
+                return { currentStreak: 0, longestStreak: 0, totalContributions: 0 };
+              }
+              
+              allDates.sort();
+              const today = new Date();
+              today.setHours(0, 0, 0, 0);
               
               for (let i = 0; i < 365; i++) {
-                const checkDate = new Date(todayDate);
+                const checkDate = new Date(today);
                 checkDate.setDate(checkDate.getDate() - i);
                 const dateStr = checkDate.toISOString().split('T')[0];
+                
                 if (allDates.includes(dateStr)) {
                   currentStreak++;
-                } else {
+                } else if (i > 0) {
                   break;
                 }
               }
               
-              allDates.sort();
               for (let i = 0; i < allDates.length; i++) {
                 if (i === 0) {
                   tempStreak = 1;
@@ -71,6 +84,7 @@ jobs:
                   const prevDate = new Date(allDates[i - 1]);
                   const currDate = new Date(allDates[i]);
                   const diffDays = Math.floor((currDate - prevDate) / (1000 * 60 * 60 * 24));
+                  
                   if (diffDays === 1) {
                     tempStreak++;
                   } else {
@@ -125,8 +139,9 @@ jobs:
             }
             
             const data = await getContributions();
+            console.log('API Response:', JSON.stringify(data).substring(0, 200));
             const stats = calculateStreaks(data);
-            console.log('Current:', stats.currentStreak, 'Longest:', stats.longestStreak, 'Total:', stats.totalContributions);
+            console.log('Calculated stats - Current:', stats.currentStreak, 'Longest:', stats.longestStreak, 'Total:', stats.totalContributions);
             const svg = createSVG(username, stats.currentStreak, stats.longestStreak, stats.totalContributions);
             fs.writeFileSync('github-streak.svg', svg);
             
