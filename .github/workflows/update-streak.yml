@@ -24,51 +24,121 @@ jobs:
           echo "Timestamp: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
           echo "GitHub User: MFaheemS"
           echo "Event: ${{ github.event_name }}"
-          echo "Ref: ${{ github.ref }}"
           echo "================================"
       
-      - name: Fetch GitHub contribution data
-        id: github-data
+      - name: Fetch all repositories
+        id: fetch-repos
         run: |
-          echo "=== Fetching GitHub Data for MFaheemS ==="
+          echo "=== Fetching All Repositories for MFaheemS ==="
           
-          # Fetch user data
-          curl -s "https://api.github.com/users/MFaheemS" \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            > user_data.json
+          # Fetch all repos (paginated)
+          PAGE=1
+          ALL_REPOS="[]"
           
-          echo "User data fetched successfully"
+          while true; do
+            echo "Fetching page $PAGE..."
+            REPOS=$(curl -s "https://api.github.com/users/MFaheemS/repos?per_page=100&page=$PAGE&type=all" \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Accept: application/vnd.github.v3+json")
+            
+            # Check if we got any repos
+            REPO_COUNT=$(echo "$REPOS" | jq 'length')
+            
+            if [ "$REPO_COUNT" -eq 0 ]; then
+              break
+            fi
+            
+            # Merge with existing repos
+            ALL_REPOS=$(echo "$ALL_REPOS" "$REPOS" | jq -s '.[0] + .[1]')
+            
+            echo "Retrieved $REPO_COUNT repos from page $PAGE"
+            PAGE=$((PAGE + 1))
+            
+            # Safety limit
+            if [ $PAGE -gt 10 ]; then
+              break
+            fi
+          done
           
-          # Fetch all repositories
-          curl -s "https://api.github.com/users/MFaheemS/repos?per_page=100&type=all" \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            > repos.json
+          # Save all repos
+          echo "$ALL_REPOS" > all_repos.json
           
-          REPO_COUNT=$(jq 'length' repos.json)
-          echo "Repository count: $REPO_COUNT"
-          
-          # Get total public repos from user data
-          PUBLIC_REPOS=$(jq '.public_repos' user_data.json)
-          echo "public_repos=$PUBLIC_REPOS" >> $GITHUB_OUTPUT
-          echo "Public repositories: $PUBLIC_REPOS"
+          TOTAL_REPOS=$(echo "$ALL_REPOS" | jq 'length')
+          echo "total_repos=$TOTAL_REPOS" >> $GITHUB_OUTPUT
+          echo "✅ Total repositories found: $TOTAL_REPOS"
       
-      - name: Calculate streak data from commits
-        id: streak-calc
+      - name: Fetch commit activity from all repos
+        id: fetch-commits
         run: |
-          echo "=== Calculating Streak Data for MFaheemS ==="
+          echo "=== Fetching Commit Activity Across All Repos ==="
           
-          # Get all commit dates from this repository (YYYY-MM-DD format) sorted
-          git log --all --author="MFaheemS" --format="%ad" --date=short | sort -u > commit_dates.txt
+          TOTAL_REPOS=${{ steps.fetch-repos.outputs.total_repos }}
+          echo "Processing $TOTAL_REPOS repositories..."
           
-          # Also try to get commits from other common email patterns
-          git log --all --author-email="@" --format="%ad" --date=short | sort -u >> commit_dates.txt
+          # Initialize commit dates file
+          > all_commit_dates.txt
           
-          # Remove duplicates and sort
-          sort -u commit_dates.txt -o commit_dates.txt
+          TOTAL_COMMITS=0
+          PROCESSED=0
           
-          echo "Total unique commit dates found: $(wc -l < commit_dates.txt)"
+          # Process each repository
+          while IFS= read -r repo; do
+            REPO_NAME=$(echo "$repo" | jq -r '.full_name')
+            PROCESSED=$((PROCESSED + 1))
+            
+            echo "[$PROCESSED/$TOTAL_REPOS] Processing: $REPO_NAME"
+            
+            # Fetch commits for this repo (last 1000 commits, paginated)
+            PAGE=1
+            while [ $PAGE -le 10 ]; do
+              COMMITS=$(curl -s "https://api.github.com/repos/$REPO_NAME/commits?author=MFaheemS&per_page=100&page=$PAGE" \
+                -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                -H "Accept: application/vnd.github.v3+json" 2>/dev/null)
+              
+              # Check if we got valid JSON
+              if ! echo "$COMMITS" | jq empty 2>/dev/null; then
+                echo "  ⚠️  Skipping (no access or empty)"
+                break
+              fi
+              
+              COMMIT_COUNT=$(echo "$COMMITS" | jq 'length')
+              
+              if [ "$COMMIT_COUNT" -eq 0 ]; then
+                break
+              fi
+              
+              # Extract commit dates (YYYY-MM-DD format)
+              echo "$COMMITS" | jq -r '.[].commit.author.date' | cut -d'T' -f1 >> all_commit_dates.txt
+              
+              TOTAL_COMMITS=$((TOTAL_COMMITS + COMMIT_COUNT))
+              echo "  ✓ Found $COMMIT_COUNT commits (page $PAGE)"
+              
+              PAGE=$((PAGE + 1))
+              
+              # Rate limiting protection
+              sleep 0.5
+            done
+          done < <(jq -c '.[]' all_repos.json)
+          
+          # Sort and deduplicate dates
+          sort -u all_commit_dates.txt -o commit_dates_unique.txt
+          
+          UNIQUE_DAYS=$(wc -l < commit_dates_unique.txt)
+          
+          echo "total_commits=$TOTAL_COMMITS" >> $GITHUB_OUTPUT
+          echo "unique_days=$UNIQUE_DAYS" >> $GITHUB_OUTPUT
+          
+          echo "=============================="
+          echo "✅ Total commits found: $TOTAL_COMMITS"
+          echo "✅ Unique days with commits: $UNIQUE_DAYS"
+          echo "=============================="
+      
+      - name: Calculate streak statistics
+        id: calculate-streak
+        run: |
+          echo "=== Calculating Streak Statistics ==="
+          
+          TOTAL_COMMITS=${{ steps.fetch-commits.outputs.total_commits }}
           
           # Calculate current streak (consecutive days from today backwards)
           CURRENT_STREAK=0
@@ -77,35 +147,36 @@ jobs:
           echo "Checking for commits starting from: $CURRENT_DATE"
           
           while true; do
-            if grep -q "^$CURRENT_DATE$" commit_dates.txt; then
+            if grep -q "^$CURRENT_DATE$" commit_dates_unique.txt 2>/dev/null; then
               CURRENT_STREAK=$((CURRENT_STREAK + 1))
-              echo "✓ Found commit on $CURRENT_DATE (streak: $CURRENT_STREAK)"
+              echo "  ✓ Day $CURRENT_STREAK: $CURRENT_DATE"
               CURRENT_DATE=$(date -u -d "$CURRENT_DATE -1 day" +%Y-%m-%d 2>/dev/null || date -u -v-1d -j -f "%Y-%m-%d" "$CURRENT_DATE" +%Y-%m-%d 2>/dev/null)
             else
-              echo "✗ No commit on $CURRENT_DATE - streak ends"
+              echo "  ✗ Streak ends (no commit on $CURRENT_DATE)"
               break
             fi
             
             # Safety limit
-            if [ $CURRENT_STREAK -gt 365 ]; then
-              echo "Reached safety limit of 365 days"
+            if [ $CURRENT_STREAK -gt 1000 ]; then
               break
             fi
           done
           
           # Calculate longest streak
+          echo "Calculating longest streak..."
+          
           LONGEST_STREAK=0
           TEMP_STREAK=0
           PREV_DATE=""
-          
-          echo "Calculating longest streak..."
           
           while IFS= read -r commit_date; do
             if [ -z "$PREV_DATE" ]; then
               TEMP_STREAK=1
             else
-              # Calculate days difference between consecutive dates
-              DAYS_DIFF=$(( ( $(date -u -d "$commit_date" +%s 2>/dev/null || date -u -j -f "%Y-%m-%d" "$commit_date" +%s) - $(date -u -d "$PREV_DATE" +%s 2>/dev/null || date -u -j -f "%Y-%m-%d" "$PREV_DATE" +%s) ) / 86400 ))
+              # Calculate days difference
+              DATE1_EPOCH=$(date -u -d "$PREV_DATE" +%s 2>/dev/null || date -u -j -f "%Y-%m-%d" "$PREV_DATE" +%s)
+              DATE2_EPOCH=$(date -u -d "$commit_date" +%s 2>/dev/null || date -u -j -f "%Y-%m-%d" "$commit_date" +%s)
+              DAYS_DIFF=$(( (DATE2_EPOCH - DATE1_EPOCH) / 86400 ))
               
               if [ $DAYS_DIFF -eq 1 ]; then
                 TEMP_STREAK=$((TEMP_STREAK + 1))
@@ -119,32 +190,29 @@ jobs:
             fi
             
             PREV_DATE=$commit_date
-          done < commit_dates.txt
-          
-          # Get total contributions (total commits in this repo)
-          TOTAL_CONTRIBUTIONS=$(git rev-list --all --count)
+          done < commit_dates_unique.txt
           
           echo "current_streak=$CURRENT_STREAK" >> $GITHUB_OUTPUT
           echo "longest_streak=$LONGEST_STREAK" >> $GITHUB_OUTPUT
-          echo "total_contributions=$TOTAL_CONTRIBUTIONS" >> $GITHUB_OUTPUT
+          echo "total_contributions=$TOTAL_COMMITS" >> $GITHUB_OUTPUT
           
           echo "=============================="
-          echo "📊 Final Statistics:"
-          echo "Current Streak: $CURRENT_STREAK days"
-          echo "Longest Streak: $LONGEST_STREAK days"
-          echo "Total Contributions: $TOTAL_CONTRIBUTIONS"
+          echo "📊 FINAL STATISTICS:"
+          echo "🔥 Current Streak: $CURRENT_STREAK days"
+          echo "🏆 Longest Streak: $LONGEST_STREAK days"
+          echo "📈 Total Contributions: $TOTAL_COMMITS commits"
           echo "=============================="
       
       - name: Update SVG file
         run: |
-          CURRENT_STREAK=${{ steps.streak-calc.outputs.current_streak }}
-          LONGEST_STREAK=${{ steps.streak-calc.outputs.longest_streak }}
-          TOTAL_CONTRIBUTIONS=${{ steps.streak-calc.outputs.total_contributions }}
+          CURRENT_STREAK=${{ steps.calculate-streak.outputs.current_streak }}
+          LONGEST_STREAK=${{ steps.calculate-streak.outputs.longest_streak }}
+          TOTAL_CONTRIBUTIONS=${{ steps.calculate-streak.outputs.total_contributions }}
           
           echo "=== Updating SVG for MFaheemS ==="
-          echo "Current Streak: $CURRENT_STREAK"
-          echo "Longest Streak: $LONGEST_STREAK"
-          echo "Total Contributions: $TOTAL_CONTRIBUTIONS"
+          echo "Current Streak: $CURRENT_STREAK days"
+          echo "Longest Streak: $LONGEST_STREAK days"
+          echo "Total Contributions: $TOTAL_CONTRIBUTIONS commits"
           
           # Determine streak emoji and message based on current streak
           if [ $CURRENT_STREAK -eq 0 ]; then
@@ -159,9 +227,12 @@ jobs:
           elif [ $CURRENT_STREAK -lt 100 ]; then
             STREAK_EMOJI="🌟"
             STREAK_MESSAGE="Amazing streak!"
-          else
+          elif [ $CURRENT_STREAK -lt 365 ]; then
             STREAK_EMOJI="👑"
             STREAK_MESSAGE="Legendary streak!"
+          else
+            STREAK_EMOJI="🚀"
+            STREAK_MESSAGE="Unstoppable force!"
           fi
           
           # Update the SVG file
@@ -175,7 +246,7 @@ jobs:
             </defs>
             <rect width="495" height="195" rx="10" fill="url(#grad1)"/>
             <rect width="495" height="195" rx="10" fill="none" stroke="rgba(112,165,253,0.2)" stroke-width="1"/>
-            <text x="247.5" y="30" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="bold" fill="#70a5fd" text-anchor="middle">MFaheemS's Contribution Streak</text>
+            <text x="247.5" y="30" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="bold" fill="#70a5fd" text-anchor="middle">MFaheemS's GitHub Contribution Streak</text>
             <text x="247.5" y="55" font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#9ca3af" text-anchor="middle">$STREAK_MESSAGE</text>
             <line x1="40" y1="70" x2="455" y2="70" stroke="rgba(112,165,253,0.2)" stroke-width="1"/>
             <text x="80" y="110" font-family="Segoe UI,Arial,sans-serif" font-size="32" font-weight="bold" fill="#70a5fd" text-anchor="middle">$CURRENT_STREAK</text>
@@ -203,8 +274,7 @@ jobs:
           if git diff --quiet; then
             echo "⚠️  No changes detected"
           else
-            echo "✅ Changes detected:"
-            git diff streak.svg | head -20
+            echo "✅ Changes detected in streak.svg"
           fi
       
       - name: Commit and push changes
@@ -215,7 +285,7 @@ jobs:
           if [ -n "$(git status --porcelain)" ]; then
             echo "=== Committing Changes ==="
             git add streak.svg
-            git commit -m "chore: update streak data for MFaheemS [skip ci]" || true
+            git commit -m "chore: update GitHub-wide streak data for MFaheemS [skip ci]" || true
             
             echo "Attempting to push changes..."
             git push origin main || git push origin master || {
@@ -228,13 +298,19 @@ jobs:
             echo "ℹ️  No changes to commit"
           fi
       
-      - name: Debug - Final status
+      - name: Final Summary
         if: always()
         run: |
-          echo "=== Final Workflow Status ==="
-          echo "Workflow completed at: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
-          echo "GitHub User: MFaheemS"
-          echo "Current Streak: ${{ steps.streak-calc.outputs.current_streak }} days"
-          echo "Longest Streak: ${{ steps.streak-calc.outputs.longest_streak }} days"
-          echo "Total Contributions: ${{ steps.streak-calc.outputs.total_contributions }}"
-          echo "============================="
+          echo "╔════════════════════════════════════════╗"
+          echo "║   GitHub Streak Update Complete! 🎉   ║"
+          echo "╚════════════════════════════════════════╝"
+          echo ""
+          echo "📅 Completed: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+          echo "👤 User: MFaheemS"
+          echo "📦 Repositories: ${{ steps.fetch-repos.outputs.total_repos }}"
+          echo "🔥 Current Streak: ${{ steps.calculate-streak.outputs.current_streak }} days"
+          echo "🏆 Longest Streak: ${{ steps.calculate-streak.outputs.longest_streak }} days"
+          echo "📈 Total Commits: ${{ steps.calculate-streak.outputs.total_contributions }}"
+          echo ""
+          echo "Next update: In 1 hour (or manual trigger)"
+          echo "═══════════════════════════════════════════"
