@@ -22,7 +22,7 @@ jobs:
           echo "Run ID: ${{ github.run_id }}"
           echo "Run Number: ${{ github.run_number }}"
           echo "Timestamp: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
-          echo "Actor: ${{ github.actor }}"
+          echo "GitHub User: MFaheemS"
           echo "Event: ${{ github.event_name }}"
           echo "Ref: ${{ github.ref }}"
           echo "================================"
@@ -35,53 +35,172 @@ jobs:
       - name: Install dependencies
         run: npm install
       
-      - name: Debug - Check Git history
+      - name: Fetch GitHub contribution data
+        id: github-data
         run: |
-          echo "=== Recent Commits ==="
-          git log --oneline -10
-          echo "====================="
-      
-      - name: Fetch streak data with cache-busting
-        id: fetch-data
-        run: |
-          CACHE_BUSTER=$(date +%s%N)
-          echo "cache_buster=$CACHE_BUSTER" >> $GITHUB_OUTPUT
+          echo "=== Fetching GitHub Data for MFaheemS ==="
           
-          echo "=== Fetching Streak Data ==="
-          echo "Cache Buster: $CACHE_BUSTER"
-          
-          # Add cache-busting parameter to API calls
-          curl -s "https://api.github.com/users/${{ github.actor }}/repos?cache=$CACHE_BUSTER" \
+          # Fetch user data
+          curl -s "https://api.github.com/users/MFaheemS" \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Cache-Control: no-cache" \
-            -H "Pragma: no-cache" \
-            -o repos.json
+            -H "Accept: application/vnd.github.v3+json" \
+            > user_data.json
           
-          echo "Repository count: $(jq 'length' repos.json)"
+          echo "User data fetched successfully"
           
-          # Calculate streak based on commit history
-          STREAK=$(git log --since="7 days ago" --oneline | wc -l)
-          echo "streak=$STREAK" >> $GITHUB_OUTPUT
-          echo "Commits in last 7 days: $STREAK"
+          # Fetch all repositories
+          curl -s "https://api.github.com/users/MFaheemS/repos?per_page=100&type=all" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            > repos.json
+          
+          REPO_COUNT=$(jq 'length' repos.json)
+          echo "Repository count: $REPO_COUNT"
+          
+          # Get total public repos from user data
+          PUBLIC_REPOS=$(jq '.public_repos' user_data.json)
+          echo "public_repos=$PUBLIC_REPOS" >> $GITHUB_OUTPUT
+          echo "Public repositories: $PUBLIC_REPOS"
       
-      - name: Debug - Display fetched data
+      - name: Calculate streak data from commits
+        id: streak-calc
         run: |
-          echo "=== Fetched Data Summary ==="
-          echo "Cache Buster: ${{ steps.fetch-data.outputs.cache_buster }}"
-          echo "Current Streak: ${{ steps.fetch-data.outputs.streak }}"
-          echo "============================"
+          echo "=== Calculating Streak Data for MFaheemS ==="
+          
+          # Get all commit dates from this repository (YYYY-MM-DD format) sorted
+          git log --all --author="MFaheemS" --format="%ad" --date=short | sort -u > commit_dates.txt
+          
+          # Also try to get commits from other common email patterns
+          git log --all --author-email="@" --format="%ad" --date=short | sort -u >> commit_dates.txt
+          
+          # Remove duplicates and sort
+          sort -u commit_dates.txt -o commit_dates.txt
+          
+          echo "Total unique commit dates found: $(wc -l < commit_dates.txt)"
+          
+          # Calculate current streak (consecutive days from today backwards)
+          CURRENT_STREAK=0
+          CURRENT_DATE=$(date -u +%Y-%m-%d)
+          
+          echo "Checking for commits starting from: $CURRENT_DATE"
+          
+          while true; do
+            if grep -q "^$CURRENT_DATE$" commit_dates.txt; then
+              CURRENT_STREAK=$((CURRENT_STREAK + 1))
+              echo "✓ Found commit on $CURRENT_DATE (streak: $CURRENT_STREAK)"
+              CURRENT_DATE=$(date -u -d "$CURRENT_DATE -1 day" +%Y-%m-%d 2>/dev/null || date -u -v-1d -j -f "%Y-%m-%d" "$CURRENT_DATE" +%Y-%m-%d 2>/dev/null)
+            else
+              echo "✗ No commit on $CURRENT_DATE - streak ends"
+              break
+            fi
+            
+            # Safety limit
+            if [ $CURRENT_STREAK -gt 365 ]; then
+              echo "Reached safety limit of 365 days"
+              break
+            fi
+          done
+          
+          # Calculate longest streak
+          LONGEST_STREAK=0
+          TEMP_STREAK=0
+          PREV_DATE=""
+          
+          echo "Calculating longest streak..."
+          
+          while IFS= read -r commit_date; do
+            if [ -z "$PREV_DATE" ]; then
+              TEMP_STREAK=1
+            else
+              # Calculate days difference between consecutive dates
+              DAYS_DIFF=$(( ( $(date -u -d "$commit_date" +%s 2>/dev/null || date -u -j -f "%Y-%m-%d" "$commit_date" +%s) - $(date -u -d "$PREV_DATE" +%s 2>/dev/null || date -u -j -f "%Y-%m-%d" "$PREV_DATE" +%s) ) / 86400 ))
+              
+              if [ $DAYS_DIFF -eq 1 ]; then
+                TEMP_STREAK=$((TEMP_STREAK + 1))
+              else
+                TEMP_STREAK=1
+              fi
+            fi
+            
+            if [ $TEMP_STREAK -gt $LONGEST_STREAK ]; then
+              LONGEST_STREAK=$TEMP_STREAK
+            fi
+            
+            PREV_DATE=$commit_date
+          done < commit_dates.txt
+          
+          # Get total contributions (total commits in this repo)
+          TOTAL_CONTRIBUTIONS=$(git rev-list --all --count)
+          
+          echo "current_streak=$CURRENT_STREAK" >> $GITHUB_OUTPUT
+          echo "longest_streak=$LONGEST_STREAK" >> $GITHUB_OUTPUT
+          echo "total_contributions=$TOTAL_CONTRIBUTIONS" >> $GITHUB_OUTPUT
+          
+          echo "=============================="
+          echo "📊 Final Statistics:"
+          echo "Current Streak: $CURRENT_STREAK days"
+          echo "Longest Streak: $LONGEST_STREAK days"
+          echo "Total Contributions: $TOTAL_CONTRIBUTIONS"
+          echo "=============================="
       
-      - name: Update README with streak
+      - name: Update SVG file
         run: |
-          STREAK=${{ steps.fetch-data.outputs.streak }}
+          CURRENT_STREAK=${{ steps.streak-calc.outputs.current_streak }}
+          LONGEST_STREAK=${{ steps.streak-calc.outputs.longest_streak }}
+          TOTAL_CONTRIBUTIONS=${{ steps.streak-calc.outputs.total_contributions }}
           
-          echo "=== Updating README ==="
-          echo "Streak value: $STREAK"
+          echo "=== Updating SVG for MFaheemS ==="
+          echo "Current Streak: $CURRENT_STREAK"
+          echo "Longest Streak: $LONGEST_STREAK"
+          echo "Total Contributions: $TOTAL_CONTRIBUTIONS"
           
-          # Update README (customize based on your format)
-          sed -i "s/Streak:.*$/Streak: $STREAK days/" README.md || echo "README.md streak section not found, skipping"
+          # Determine streak emoji and message based on current streak
+          if [ $CURRENT_STREAK -eq 0 ]; then
+            STREAK_EMOJI="💤"
+            STREAK_MESSAGE="Start your streak today!"
+          elif [ $CURRENT_STREAK -lt 7 ]; then
+            STREAK_EMOJI="🔥"
+            STREAK_MESSAGE="Keep it going!"
+          elif [ $CURRENT_STREAK -lt 30 ]; then
+            STREAK_EMOJI="⚡"
+            STREAK_MESSAGE="You're on fire!"
+          elif [ $CURRENT_STREAK -lt 100 ]; then
+            STREAK_EMOJI="🌟"
+            STREAK_MESSAGE="Amazing streak!"
+          else
+            STREAK_EMOJI="👑"
+            STREAK_MESSAGE="Legendary streak!"
+          fi
           
-          cat README.md | grep -i streak || echo "No streak section found in README"
+          # Update the SVG file
+          cat > streak.svg << EOF
+          <svg width="495" height="195" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#1a1b27;stop-opacity:1"/>
+                <stop offset="100%" style="stop-color:#2d1b69;stop-opacity:1"/>
+              </linearGradient>
+            </defs>
+            <rect width="495" height="195" rx="10" fill="url(#grad1)"/>
+            <rect width="495" height="195" rx="10" fill="none" stroke="rgba(112,165,253,0.2)" stroke-width="1"/>
+            <text x="247.5" y="30" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="bold" fill="#70a5fd" text-anchor="middle">MFaheemS's Contribution Streak</text>
+            <text x="247.5" y="55" font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#9ca3af" text-anchor="middle">$STREAK_MESSAGE</text>
+            <line x1="40" y1="70" x2="455" y2="70" stroke="rgba(112,165,253,0.2)" stroke-width="1"/>
+            <text x="80" y="110" font-family="Segoe UI,Arial,sans-serif" font-size="32" font-weight="bold" fill="#70a5fd" text-anchor="middle">$CURRENT_STREAK</text>
+            <text x="80" y="135" font-family="Segoe UI,Arial,sans-serif" font-size="14" fill="#9ca3af" text-anchor="middle">Current Streak</text>
+            <text x="80" y="160" font-family="Arial" font-size="24" text-anchor="middle">$STREAK_EMOJI</text>
+            <line x1="165" y1="85" x2="165" y2="175" stroke="rgba(112,165,253,0.2)" stroke-width="1"/>
+            <text x="247.5" y="110" font-family="Segoe UI,Arial,sans-serif" font-size="32" font-weight="bold" fill="#a78bfa" text-anchor="middle">$LONGEST_STREAK</text>
+            <text x="247.5" y="135" font-family="Segoe UI,Arial,sans-serif" font-size="14" fill="#9ca3af" text-anchor="middle">Longest Streak</text>
+            <text x="247.5" y="160" font-family="Arial" font-size="24" text-anchor="middle">🏆</text>
+            <line x1="330" y1="85" x2="330" y2="175" stroke="rgba(112,165,253,0.2)" stroke-width="1"/>
+            <text x="415" y="110" font-family="Segoe UI,Arial,sans-serif" font-size="32" font-weight="bold" fill="#34d399" text-anchor="middle">$TOTAL_CONTRIBUTIONS</text>
+            <text x="415" y="135" font-family="Segoe UI,Arial,sans-serif" font-size="14" fill="#9ca3af" text-anchor="middle">Total Contributions</text>
+            <text x="415" y="160" font-family="Arial" font-size="24" text-anchor="middle">📊</text>
+          </svg>
+          EOF
+          
+          echo "✅ SVG file updated successfully"
       
       - name: Debug - Check for changes
         run: |
@@ -90,32 +209,31 @@ jobs:
           echo "=================="
           
           if git diff --quiet; then
-            echo "No changes detected"
+            echo "⚠️  No changes detected"
           else
-            echo "Changes detected:"
-            git diff
+            echo "✅ Changes detected:"
+            git diff streak.svg | head -20
           fi
       
       - name: Commit and push changes
-        if: always()
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           
           if [ -n "$(git status --porcelain)" ]; then
             echo "=== Committing Changes ==="
-            git add .
-            git commit -m "chore: update streak [skip ci]" || true
+            git add streak.svg
+            git commit -m "chore: update streak data for MFaheemS [skip ci]" || true
             
             echo "Attempting to push changes..."
-            git push origin main || {
+            git push origin main || git push origin master || {
               echo "Push failed, retrying with pull first..."
-              git pull origin main --rebase
-              git push origin main
+              git pull origin main --rebase || git pull origin master --rebase
+              git push origin main || git push origin master
             }
-            echo "Changes pushed successfully"
+            echo "✅ Changes pushed successfully"
           else
-            echo "No changes to commit"
+            echo "ℹ️  No changes to commit"
           fi
       
       - name: Debug - Final status
@@ -123,5 +241,8 @@ jobs:
         run: |
           echo "=== Final Workflow Status ==="
           echo "Workflow completed at: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
-          echo "Exit code: $?"
+          echo "GitHub User: MFaheemS"
+          echo "Current Streak: ${{ steps.streak-calc.outputs.current_streak }} days"
+          echo "Longest Streak: ${{ steps.streak-calc.outputs.longest_streak }} days"
+          echo "Total Contributions: ${{ steps.streak-calc.outputs.total_contributions }}"
           echo "============================="
