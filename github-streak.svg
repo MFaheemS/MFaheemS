@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Streak Badge Generator</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1a1b27 0%, #2d1b69 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #70a5fd;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+        
+        .subtitle {
+            color: #9ca3af;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            color: #e5e7eb;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #70a5fd;
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-input {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .stat-input label {
+            font-size: 0.85em;
+        }
+        
+        .stat-input input {
+            padding: 10px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-bottom: 20px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        #preview {
+            display: none;
+            margin-top: 30px;
+        }
+        
+        .preview-title {
+            color: #70a5fd;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        #svgContainer {
+            background: #1a1b27;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #e5e7eb;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            resize: vertical;
+            min-height: 100px;
+            box-sizing: border-box;
+        }
+        
+        .copy-btn {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            margin-top: 10px;
+        }
+        
+        .note {
+            background: rgba(251, 191, 36, 0.1);
+            border-left: 4px solid #fbbf24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            color: #fde68a;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔥 GitHub Streak Badge Generator</h1>
+        <p class="subtitle">Create a beautiful streak badge that handles zero commits gracefully</p>
+        
+        <div class="input-group">
+            <label for="username">GitHub Username</label>
+            <input type="text" id="username" placeholder="MFaheemS" value="MFaheemS">
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-input">
+                <label for="currentStreak">Current Streak</label>
+                <input type="number" id="currentStreak" value="0" min="0">
+            </div>
+            <div class="stat-input">
+                <label for="longestStreak">Longest Streak</label>
+                <input type="number" id="longestStreak" value="5" min="0">
+            </div>
+            <div class="stat-input">
+                <label for="totalContributions">Total Contributions</label>
+                <input type="number" id="totalContributions" value="247" min="0">
+            </div>
+        </div>
+        
+        <button onclick="generateBadge()">Generate Badge</button>
+        
+        <div id="preview">
+            <div class="preview-title">Preview</div>
+            <div id="svgContainer"></div>
+            
+            <div class="preview-title">Markdown Code</div>
+            <textarea id="markdownCode" readonly></textarea>
+            <button class="copy-btn" onclick="copyMarkdown()">Copy Markdown</button>
+            
+            <div class="note">
+                <strong>📝 Note:</strong> Since GitHub doesn't allow external HTML in READMEs, you'll need to:
+                <br>1. Save the SVG code to a file (e.g., <code>streak.svg</code>)
+                <br>2. Upload it to your repository
+                <br>3. Reference it in your README: <code>![GitHub Streak](./streak.svg)</code>
+                <br><br>Or use this as inspiration to create a GitHub Action that auto-generates the badge!
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateBadge() {
+            const username = document.getElementById('username').value || 'User';
+            const currentStreak = parseInt(document.getElementById('currentStreak').value) || 0;
+            const longestStreak = parseInt(document.getElementById('longestStreak').value) || 0;
+            const totalContributions = parseInt(document.getElementById('totalContributions').value) || 0;
+            
+            const svg = createStreakSVG(username, currentStreak, longestStreak, totalContributions);
+            
+            document.getElementById('svgContainer').innerHTML = svg;
+            document.getElementById('markdownCode').value = svg;
+            document.getElementById('preview').style.display = 'block';
+            
+            document.getElementById('preview').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        function createStreakSVG(username, current, longest, total) {
+            const width = 495;
+            const height = 195;
+            
+            // Determine streak status and emoji
+            let streakEmoji = '🔥';
+            let streakStatus = 'Keep it up!';
+            
+            if (current === 0) {
+                streakEmoji = '💤';
+                streakStatus = 'Start your streak today!';
+            } else if (current >= 30) {
+                streakEmoji = '⚡';
+                streakStatus = 'Incredible streak!';
+            } else if (current >= 7) {
+                streakEmoji = '🔥';
+                streakStatus = 'On fire!';
+            }
+            
+            return `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#1a1b27;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#2d1b69;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+    
+    <!-- Background -->
+    <rect width="${width}" height="${height}" rx="10" fill="url(#grad1)"/>
+    <rect width="${width}" height="${height}" rx="10" fill="none" stroke="rgba(112, 165, 253, 0.2)" stroke-width="1"/>
+    
+    <!-- Title -->
+    <text x="${width/2}" y="30" font-family="'Segoe UI', Arial, sans-serif" font-size="18" font-weight="bold" fill="#70a5fd" text-anchor="middle">
+        ${username}'s Contribution Streak
+    </text>
+    
+    <!-- Status Message -->
+    <text x="${width/2}" y="55" font-family="'Segoe UI', Arial, sans-serif" font-size="12" fill="#9ca3af" text-anchor="middle">
+        ${streakStatus}
+    </text>
+    
+    <!-- Divider Line -->
+    <line x1="40" y1="70" x2="${width-40}" y2="70" stroke="rgba(112, 165, 253, 0.2)" stroke-width="1"/>
+    
+    <!-- Current Streak -->
+    <g>
+        <text x="80" y="110" font-family="'Segoe UI', Arial, sans-serif" font-size="32" font-weight="bold" fill="#70a5fd" text-anchor="middle">
+            ${current}
+        </text>
+        <text x="80" y="135" font-family="'Segoe UI', Arial, sans-serif" font-size="14" fill="#9ca3af" text-anchor="middle">
+            Current Streak
+        </text>
+        <text x="80" y="160" font-family="Arial" font-size="24" text-anchor="middle">
+            ${streakEmoji}
+        </text>
+    </g>
+    
+    <!-- Vertical Divider -->
+    <line x1="165" y1="85" x2="165" y2="175" stroke="rgba(112, 165, 253, 0.2)" stroke-width="1"/>
+    
+    <!-- Longest Streak -->
+    <g>
+        <text x="${width/2}" y="110" font-family="'Segoe UI', Arial, sans-serif" font-size="32" font-weight="bold" fill="#a78bfa" text-anchor="middle">
+            ${longest}
+        </text>
+        <text x="${width/2}" y="135" font-family="'Segoe UI', Arial, sans-serif" font-size="14" fill="#9ca3af" text-anchor="middle">
+            Longest Streak
+        </text>
+        <text x="${width/2}" y="160" font-family="Arial" font-size="24" text-anchor="middle">
+            🏆
+        </text>
+    </g>
+    
+    <!-- Vertical Divider -->
+    <line x1="${width-165}" y1="85" x2="${width-165}" y2="175" stroke="rgba(112, 165, 253, 0.2)" stroke-width="1"/>
+    
+    <!-- Total Contributions -->
+    <g>
+        <text x="${width-80}" y="110" font-family="'Segoe UI', Arial, sans-serif" font-size="32" font-weight="bold" fill="#34d399" text-anchor="middle">
+            ${total}
+        </text>
+        <text x="${width-80}" y="135" font-family="'Segoe UI', Arial, sans-serif" font-size="14" fill="#9ca3af" text-anchor="middle">
+            Total Contributions
+        </text>
+        <text x="${width-80}" y="160" font-family="Arial" font-size="24" text-anchor="middle">
+            📊
+        </text>
+    </g>
+</svg>`;
+        }
+        
+        function copyMarkdown() {
+            const textarea = document.getElementById('markdownCode');
+            textarea.select();
+            document.execCommand('copy');
+            
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = '✓ Copied!';
+            setTimeout(() => {
+                btn.textContent = originalText;
+            }, 2000);
+        }
+        
+        // Generate initial preview
+        generateBadge();
+    </script>
+</body>
+</html>
