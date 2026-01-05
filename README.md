@@ -106,7 +106,7 @@
 ##  GitHub Statistics
 
 <div align="center">
-  <img width="49%" src="./github-streak.svg" alt="GitHub Streak" />
+  <img width="49%" src="./streak.svg" alt="GitHub Streak" />
 </div>
 
 
