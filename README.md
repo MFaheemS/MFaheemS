@@ -24,7 +24,6 @@
 -  Looking to collaborate on **mobile or AI based projects**
 -  Passionate about building **scalable, real-world software solutions**
 -  Reach me at **faheemmohammad198@gmail.com**
--  Fun fact: I turn coffee into code ☕➡️💻
 
 <br clear="right"/>
 
