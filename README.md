@@ -213,7 +213,6 @@
 
 <div align="center">
   
-### 💡 "*First, solve the problem. Then, write the code.*" – John Johnson
 
 **Thanks for visiting! Show some ❤️ by starring repositories that interest you!**
 
