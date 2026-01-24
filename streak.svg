@@ -8,17 +8,17 @@
   <rect width="495" height="195" rx="10" fill="url(#grad1)"/>
   <rect width="495" height="195" rx="10" fill="none" stroke="rgba(112,165,253,0.2)" stroke-width="1"/>
   <text x="247.5" y="30" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="bold" fill="#70a5fd" text-anchor="middle">MFaheemS's GitHub Contribution Streak</text>
-  <text x="247.5" y="55" font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#9ca3af" text-anchor="middle">Start your streak today!</text>
+  <text x="247.5" y="55" font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#9ca3af" text-anchor="middle">Keep it going!</text>
   <line x1="40" y1="70" x2="455" y2="70" stroke="rgba(112,165,253,0.2)" stroke-width="1"/>
-  <text x="80" y="110" font-family="Segoe UI,Arial,sans-serif" font-size="32" font-weight="bold" fill="#70a5fd" text-anchor="middle">0</text>
+  <text x="80" y="110" font-family="Segoe UI,Arial,sans-serif" font-size="32" font-weight="bold" fill="#70a5fd" text-anchor="middle">1</text>
   <text x="80" y="135" font-family="Segoe UI,Arial,sans-serif" font-size="14" fill="#9ca3af" text-anchor="middle">Current Streak</text>
-  <text x="80" y="160" font-family="Arial" font-size="24" text-anchor="middle">💤</text>
+  <text x="80" y="160" font-family="Arial" font-size="24" text-anchor="middle">🔥</text>
   <line x1="165" y1="85" x2="165" y2="175" stroke="rgba(112,165,253,0.2)" stroke-width="1"/>
   <text x="247.5" y="110" font-family="Segoe UI,Arial,sans-serif" font-size="32" font-weight="bold" fill="#a78bfa" text-anchor="middle">6</text>
   <text x="247.5" y="135" font-family="Segoe UI,Arial,sans-serif" font-size="14" fill="#9ca3af" text-anchor="middle">Longest Streak</text>
   <text x="247.5" y="160" font-family="Arial" font-size="24" text-anchor="middle">🏆</text>
   <line x1="330" y1="85" x2="330" y2="175" stroke="rgba(112,165,253,0.2)" stroke-width="1"/>
-  <text x="415" y="110" font-family="Segoe UI,Arial,sans-serif" font-size="32" font-weight="bold" fill="#34d399" text-anchor="middle">72</text>
+  <text x="415" y="110" font-family="Segoe UI,Arial,sans-serif" font-size="32" font-weight="bold" fill="#34d399" text-anchor="middle">78</text>
   <text x="415" y="135" font-family="Segoe UI,Arial,sans-serif" font-size="14" fill="#9ca3af" text-anchor="middle">Total Contributions</text>
   <text x="415" y="160" font-family="Arial" font-size="24" text-anchor="middle">📊</text>
 </svg>
