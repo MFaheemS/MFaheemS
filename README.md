@@ -115,7 +115,7 @@
 
 ---
 
-##  Featured Projects
+##  Some of my Projects
 
 <table>
 <tr>
@@ -190,15 +190,6 @@
 
 ---
 
-##  Random Dev Quote
-
-<div align="center">
-  
-![Dev Quote](https://quotes-github-readme.vercel.app/api?type=horizontal&theme=tokyonight)
-
-</div>
-
----
 
 ## Contributions
 
