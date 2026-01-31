@@ -18,7 +18,7 @@
   <text x="247.5" y="135" font-family="Segoe UI,Arial,sans-serif" font-size="14" fill="#9ca3af" text-anchor="middle">Longest Streak</text>
   <text x="247.5" y="160" font-family="Arial" font-size="24" text-anchor="middle">🏆</text>
   <line x1="330" y1="85" x2="330" y2="175" stroke="rgba(112,165,253,0.2)" stroke-width="1"/>
-  <text x="415" y="110" font-family="Segoe UI,Arial,sans-serif" font-size="32" font-weight="bold" fill="#34d399" text-anchor="middle">85</text>
+  <text x="415" y="110" font-family="Segoe UI,Arial,sans-serif" font-size="32" font-weight="bold" fill="#34d399" text-anchor="middle">86</text>
   <text x="415" y="135" font-family="Segoe UI,Arial,sans-serif" font-size="14" fill="#9ca3af" text-anchor="middle">Total Contributions</text>
   <text x="415" y="160" font-family="Arial" font-size="24" text-anchor="middle">📊</text>
 </svg>
