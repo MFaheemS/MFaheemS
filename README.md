@@ -191,15 +191,6 @@
 ---
 
 
-## Contributions
-
-<div align="center">
-  
-![Snake Animation](https://github.com/MFaheemS/MFaheemS/blob/output/github-contribution-grid-snake-dark.svg)
-
-
-</div>
-
 ---
 
 <div align="center">
