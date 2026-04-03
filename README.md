@@ -100,15 +100,6 @@
 
 </div>
 
----
-
-##  GitHub Statistics
-
-<div align="center">
-  <img width="49%" src="./streak.svg" alt="GitHub Streak" />
-</div>
-
-
 
 
 
